@@ -7,6 +7,8 @@ const AddQuestion = ({ visible, closeModal, wallet }) => {
   const [questionText, setQuestionText] = useState('');
 
   const submitForm = async () => {
+    if (!questionText) return;
+
     try {
       setLoading(true);
       await addQuestion(questionText, wallet);
