@@ -7,15 +7,22 @@ export const getWalletAddress = async wallet =>
 
 export const addQuestion = async (questionText, wallet) => {
   const questionId = uuid();
+  const time = currentUnixTime();
 
   const transaction = await arweave.createTransaction(
-    { data: JSON.stringify({ questionText, questionId }) },
+    {
+      data: JSON.stringify({
+        questionText,
+        questionId,
+        time
+      })
+    },
     wallet
   );
 
   transaction.addTag('Question-Text', questionText);
-  transaction.addTag('questionId', questionId);
-  transaction.addTag('Time', currentUnixTime());
+  transaction.addTag('Question-Id', questionId);
+  transaction.addTag('Time', time);
   transaction.addTag('App-Name', getAppName());
 
   await arweave.transactions.sign(transaction, wallet);
