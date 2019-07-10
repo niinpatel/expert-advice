@@ -20,7 +20,31 @@ export const addQuestion = async (questionText, wallet) => {
     wallet
   );
 
+  transaction.addTag('Content-Type', 'Question');
   transaction.addTag('Question-Text', questionText);
+  transaction.addTag('Question-Id', questionId);
+  transaction.addTag('Time', time);
+  transaction.addTag('App-Name', getAppName());
+
+  await arweave.transactions.sign(transaction, wallet);
+  await arweave.transactions.post(transaction);
+  return;
+};
+
+export const answerQuestion = async (
+  { name, credential, answer, questionId },
+  wallet
+) => {
+  const time = currentUnixTime();
+
+  const transaction = await arweave.createTransaction(
+    {
+      data: JSON.stringify({ name, credential, answer })
+    },
+    wallet
+  );
+
+  transaction.addTag('Content-Type', 'Answer');
   transaction.addTag('Question-Id', questionId);
   transaction.addTag('Time', time);
   transaction.addTag('App-Name', getAppName());
@@ -32,9 +56,17 @@ export const addQuestion = async (questionText, wallet) => {
 
 export const getAllQuestions = async () => {
   const query = {
-    op: 'equals',
-    expr1: 'App-Name',
-    expr2: getAppName()
+    op: 'and',
+    expr1: {
+      op: 'equals',
+      expr1: 'App-Name',
+      expr2: getAppName()
+    },
+    expr2: {
+      op: 'equals',
+      expr1: 'Content-Type',
+      expr2: 'Question'
+    }
   };
 
   const txids = await arweave.arql(query);

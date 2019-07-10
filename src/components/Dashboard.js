@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import AddQuestion from './AddQuestion';
 import { Button } from 'antd';
 import { getAllQuestions } from '../api';
-import moment from 'moment';
+import Question from './Question';
 
 const Dashboard = ({ walletAddress, wallet }) => {
   const [questions, setQuestions] = useState([]);
@@ -22,14 +22,20 @@ const Dashboard = ({ walletAddress, wallet }) => {
       />
 
       <h1>Feed</h1>
-      {questions &&
+      {questions.length ? (
         questions.map(question => (
-          <p key={question.questionId}>
-            {question.questionText} - asked{' '}
-            {moment(question.time * 1000).fromNow()}
-            <Button>Answer</Button>
-          </p>
-        ))}
+          <Question
+            question={question}
+            wallet={wallet}
+            key={question.questionId}
+          />
+        ))
+      ) : (
+        <p>
+          New questions will appear here, if you have added one recently, please
+          wait sometime for it to appear on blockchain.
+        </p>
+      )}
     </Fragment>
   );
 };
