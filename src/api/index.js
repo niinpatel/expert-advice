@@ -83,3 +83,41 @@ export const getAllQuestions = async () => {
 
   return stringifiedTransactions.map(transaction => JSON.parse(transaction));
 };
+
+export const getAnswers = async ({ questionId }) => {
+  const query = {
+    op: 'and',
+    expr1: {
+      op: 'equals',
+      expr1: 'Question-Id',
+      expr2: questionId
+    },
+    expr2: {
+      op: 'and',
+      expr1: {
+        op: 'equals',
+        expr1: 'Content-Type',
+        expr2: 'Answer'
+      },
+      expr2: {
+        op: 'equals',
+        expr1: 'App-Name',
+        expr2: getAppName()
+      }
+    }
+  };
+
+  const txids = await arweave.arql(query);
+
+  const transactions = await Promise.all(
+    txids.map(txid => arweave.transactions.get(txid))
+  );
+
+  const stringifiedTransactions = await Promise.all(
+    transactions.map(transaction =>
+      transaction.get('data', { decode: true, string: true })
+    )
+  );
+
+  return stringifiedTransactions.map(transaction => JSON.parse(transaction));
+};
