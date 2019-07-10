@@ -4,7 +4,7 @@ A question & answer platform built on arweave blockchain. This app was built in 
 
 ## Preview
 
-![preview](preview.png)
+![preview](preview.PNG)
 
 ## Run it locally.
 
