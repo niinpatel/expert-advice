@@ -1,22 +1,37 @@
 import React, { useState } from 'react';
 import moment from 'moment';
 import AnswerQuestion from './AnswerQuestion';
-import { Button } from 'antd';
+import Answers from './Answers';
+import { Button, Typography } from 'antd';
 
 const Question = ({ question, wallet }) => {
-  const [visible, setVisible] = useState(false);
+  const [answerQuestionModalVisible, setAnswerQuestionModalVisible] = useState(
+    false
+  );
+
+  const [viewAnswerModalVisible, setViewAnswerModalVisible] = useState(false);
 
   return (
-    <p key={question.questionId}>
+    <Typography.Paragraph key={question.questionId}>
       {question.questionText} - asked {moment(question.time * 1000).fromNow()}
-      <Button onClick={() => setVisible(true)}>Answer</Button>
+      <Button onClick={() => setAnswerQuestionModalVisible(true)}>
+        Add an Answer
+      </Button>
+      <Button onClick={() => setViewAnswerModalVisible(true)} type="primary">
+        View answers
+      </Button>
       <AnswerQuestion
-        visible={visible}
-        closeModal={() => setVisible(false)}
+        visible={answerQuestionModalVisible}
+        closeModal={() => setAnswerQuestionModalVisible(false)}
         questionId={question.questionId}
         wallet={wallet}
       />
-    </p>
+      <Answers
+        visible={viewAnswerModalVisible}
+        closeModal={() => setViewAnswerModalVisible(false)}
+        questionId={question.questionId}
+      />
+    </Typography.Paragraph>
   );
 };
 

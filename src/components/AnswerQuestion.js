@@ -18,7 +18,7 @@ const AnswerQuestion = ({ visible, closeModal, wallet, questionId }) => {
       setLoading(true);
       console.log(name, credential, answer);
       await answerQuestion({ name, credential, answer, questionId }, wallet);
-      message.success('Success. Your question will appear in few minutes.');
+      message.success('Success. Your answer will appear in few minutes.');
       resetState();
       closeModal();
     } catch (e) {

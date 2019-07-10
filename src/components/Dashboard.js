@@ -14,7 +14,13 @@ const Dashboard = ({ walletAddress, wallet }) => {
 
   return (
     <Fragment>
-      <Button onClick={() => setAskQuestionModal(true)}>Ask a question</Button>
+      <Button
+        onClick={() => setAskQuestionModal(true)}
+        size="large"
+        type="primary"
+      >
+        Ask a question
+      </Button>
       <AddQuestion
         visible={askQuestionModal}
         closeModal={() => setAskQuestionModal(false)}
