@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Input, message } from 'antd';
 import { addQuestion } from '../api';
+import { endsWithQuestionMark } from "../utils";
 
 const AddQuestion = ({ visible, closeModal, wallet }) => {
   const [loading, setLoading] = useState(false);
@@ -8,6 +9,10 @@ const AddQuestion = ({ visible, closeModal, wallet }) => {
 
   const submitForm = async () => {
     if (!questionText) return;
+
+    if(!endsWithQuestionMark(questionText)){
+      return message.error('This question should end with a question mark.')
+    }
 
     try {
       setLoading(true);
