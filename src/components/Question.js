@@ -13,7 +13,7 @@ const Question = ({ question, wallet }) => {
 
   return (
     <Typography.Paragraph key={question.questionId}>
-      {question.questionText} - asked {moment(question.time * 1000).fromNow()}
+      {question.questionText} - asked {moment.unix(question.time).fromNow()}
       <Button onClick={() => setAnswerQuestionModalVisible(true)}>
         Add an Answer
       </Button>
